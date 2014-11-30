@@ -100,8 +100,8 @@ class resetlogin_module
 					WHERE user_id = $user_id";
 				$this->db->sql_query($sql);
 
-				add_log('admin', 'LOG_USER_LOGIN_RESET', $reset_username);
-				add_log('user', $user_id, 'LOG_USER_LOGIN_RESET', $reset_username);
+				$phpbb_log->add('admin', 'LOG_USER_LOGIN_RESET', $reset_username);
+				$phpbb_log->add('user', $user_id, 'LOG_USER_LOGIN_RESET', $reset_username);
 				trigger_error(sprintf($this->user->lang['USER_LOGIN_RESET'], $reset_username) . adm_back_link($this->u_action));
 			}
 		}
