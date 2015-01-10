@@ -33,7 +33,7 @@ class resetlogin_module
 
 	function main($id, $mode)
 	{
-		global $request, $template, $user, $db, $phpbb_root_path, $phpEx;
+		global $request, $template, $user, $db, $phpbb_root_path, $phpEx, $phpbb_log;
 
 		$this->request		= $request;
 		$this->template 	= $template;
@@ -41,17 +41,15 @@ class resetlogin_module
 		$this->db			= $db;
 		$this->root_path	= $phpbb_root_path;
 		$this->phpEx		= $phpEx;
+		$this->phpbb_log	= $phpbb_log;
 
-		$this->user->add_lang_ext('david63/resetlogin', 'resetlogin_common');
 		$this->tpl_name		= 'reset_login';
 		$this->page_title	= $this->user->lang('RESET_LOGIN');
-		$form_key			= 'resetlogin';
+		$form_key			= 'reset_login';
 		add_form_key($form_key);
 
 		$submit 		= ($this->request->is_set_post('submit')) ? true : false;
-		$action			= $request->variable('action', '');
-		$login_reset	= ($action == 'login_reset') ? true : false;
-		$reset_username	= utf8_normalize_nfc($request->variable('reset_username', '', true));
+		$reset_username	= $this->request->variable('reset_username', '', true);
 
 		$errors = array();
 
@@ -61,10 +59,7 @@ class resetlogin_module
 			{
 				trigger_error($this->user->lang['FORM_INVALID']);
 			}
-		}
 
-		if($submit || $login_reset)
-		{
 			if (!empty($reset_username))
 			{
 				$sql = 'SELECT user_id, user_login_attempts
@@ -93,27 +88,25 @@ class resetlogin_module
 				$errors[] = $this->user->lang['NO_USER_SPECIFIED'];
 			}
 
-			if(!sizeof($errors))
+			if (empty($errors))
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . "
+				$sql = 'UPDATE ' . USERS_TABLE . '
 					SET user_login_attempts = 0
-					WHERE user_id = $user_id";
+					WHERE user_id = ' . (int) $user_id;
 				$this->db->sql_query($sql);
 
-				$phpbb_log->add('admin', 'LOG_USER_LOGIN_RESET', $reset_username);
-				$phpbb_log->add('user', $user_id, 'LOG_USER_LOGIN_RESET', $reset_username);
-				trigger_error(sprintf($this->user->lang['USER_LOGIN_RESET'], $reset_username) . adm_back_link($this->u_action));
+				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET',  time(), array($login_attempts, $reset_username));
+				trigger_error(sprintf($this->user->lang['USER_LOGIN_RESET'], $login_attempts, $reset_username) . adm_back_link($this->u_action));
 			}
 		}
 
 		$this->template->assign_vars(array(
 			'ERROR_MSG'			=> implode('<br />', $errors),
 			'RESET_USERNAME'	=> (!empty($user_id)) ? $reset_username : '',
+
 			'S_ERROR'			=> (sizeof($errors)) ? true : false,
 			'U_ACTION'			=> $this->u_action,
 			'U_RESET_USERNAME'	=> append_sid("{$this->root_path}memberlist.$this->phpEx", 'mode=searchuser&amp;form=resetlogin&amp;field=reset_username&amp;select_single=true'),
 		));
 	}
 }
-
-?>
