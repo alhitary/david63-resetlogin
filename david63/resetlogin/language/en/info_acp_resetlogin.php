@@ -39,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_USER_UTILS'		=> 'User utilities',
 	
-	'LOG_USER_LOGIN_RESET'	=> '<strong>Reset %1$s login attempts for</strong><br />» %2$s',
+	'LOG_USER_LOGIN_RESET'	=> '<strong>Reset %1$s failed login attempts for</strong><br />» %2$s',
 
 	'NO_LOGINS'				=> 'The selected user does not have any failed login attempts to reset',
 	'NO_USER'				=> 'The selected user does not exist in the database',

@@ -96,6 +96,7 @@ class resetlogin_module
 				$this->db->sql_query($sql);
 
 				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET',  time(), array($login_attempts, $reset_username));
+				$this->phpbb_log->add('user', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET', time(), array('reportee_id' => $this->user->data['username'], $login_attempts, $reset_username));
 				trigger_error(sprintf($this->user->lang['USER_LOGIN_RESET'], $login_attempts, $reset_username) . adm_back_link($this->u_action));
 			}
 		}
