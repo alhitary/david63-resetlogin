@@ -19,7 +19,7 @@ class version_1_0_0 extends \phpbb\db\migration\migration
 
 		if ($this->module_check())
 		{
-			array('module.add', array('acp', 'ACP_CAT_USERGROUP', 'ACP_USER_UTILS'));
+			$update_data[] = array('module.add', array('acp', 'ACP_CAT_USERGROUP', 'ACP_USER_UTILS'));
 		}
 
 		$update_data[] = array('module.add', array(
