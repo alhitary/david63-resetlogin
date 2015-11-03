@@ -7,7 +7,6 @@ services:
             - @request
             - @template
             - @user
-            - @log			
-            - @service_container
+            - @log
             - %core.root_path%
             - %core.php_ext%

@@ -11,6 +11,8 @@ namespace david63\resetlogin\controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use david63\resetlogin\ext;
+
 /**
 * Admin controller
 */
@@ -34,9 +36,6 @@ class admin_controller implements admin_interface
 	/** @var \phpbb\log */
 	protected $log;
 
-	/** @var ContainerInterface */
-	protected $container;
-
 	/** @var string phpBB root path */
 	protected $root_path;
 
@@ -55,12 +54,11 @@ class admin_controller implements admin_interface
 	* @param \phpbb\template\template			$template	Template object
 	* @param \phpbb\user						$user		User object
 	* @param \phpbb\log\log						$log		phpBB log
-	* @param ContainerInterface					$container	Service container interface
 	* @param string 							$root_path
 	* @param string 							$php_ext
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\log\log $log, ContainerInterface $container, $root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\log\log $log, $root_path, $php_ext)
 	{
 		$this->config		= $config;
 		$this->db  			= $db;
@@ -68,7 +66,6 @@ class admin_controller implements admin_interface
 		$this->template		= $template;
 		$this->user			= $user;
 		$this->log			= $log;
-		$this->container	= $container;
 		$this->root_path	= $root_path;
 		$this->phpEx		= $php_ext;
 	}
@@ -131,20 +128,20 @@ class admin_controller implements admin_interface
 					WHERE user_id = ' . (int) $user_id;
 				$this->db->sql_query($sql);
 
-				$phpbb_log = $this->container->get('log');
-				$phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET',  time(), array($login_attempts, $reset_username));
-				$phpbb_log->add('user', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET', time(), array('reportee_id' => $this->user->data['username'], $login_attempts, $reset_username));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET',  time(), array($login_attempts, $reset_username));
+				$this->log->add('user', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_LOGIN_RESET', time(), array('reportee_id' => $this->user->data['username'], $login_attempts, $reset_username));
 				trigger_error($this->user->lang('USER_LOGIN_RESET', $login_attempts, $reset_username) . adm_back_link($this->u_action));
 			}
 		}
 
 		$this->template->assign_vars(array(
-			'ERROR_MSG'			=> implode('<br />', $errors),
-			'RESET_USERNAME'	=> (!empty($user_id)) ? $reset_username : '',
+			'ERROR_MSG'						=> implode('<br />', $errors),
+			'RESET_LOGIN_ATTEMPTS_VERSION'	=> ext::RESET_LOGIN_ATTEMPTS_VERSION,
+			'RESET_USERNAME'				=> (!empty($user_id)) ? $reset_username : '',
 
-			'S_ERROR'			=> (sizeof($errors)) ? true : false,
-			'U_ACTION'			=> $this->u_action,
-			'U_RESET_USERNAME'	=> append_sid("{$this->root_path}memberlist.$this->phpEx", 'mode=searchuser&amp;form=resetlogin&amp;field=reset_username&amp;select_single=true'),
+			'S_ERROR'						=> (sizeof($errors)) ? true : false,
+			'U_ACTION'						=> $this->u_action,
+			'U_RESET_USERNAME'				=> append_sid("{$this->root_path}memberlist.$this->phpEx", 'mode=searchuser&amp;form=resetlogin&amp;field=reset_username&amp;select_single=true'),
 		));
 	}
 }

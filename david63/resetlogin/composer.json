@@ -3,14 +3,14 @@
 	"type": "phpbb-extension",
 	"description": "Adds an Admin option to reset a user's login attempts",
 	"homepage": "",
-	"version": "1.0.3",
-	"time": "2014-11-30",
+	"version": "1.0.4",
+	"time": "2015-11-03",
 	"license": "GPL-2.0",
 	"authors": [{
 			"name": "David Wood",
 			"username": "david63",
-			"email": "david@webworld.xyz",
-			"homepage": "http://webworld.xyz",
+			"email": "",
+			"homepage": "",
 			"role": "Developer"
 		}],
 	"require": {
@@ -21,11 +21,6 @@
 		"display-name": "Reset login attempts",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.1.2,<3.2.*@dev"
-      },
-		"version-check": {
-		 	"host": "www.phpbb.com",
-			"directory": "/customise/db/extension/reset_login_attempts_3",
-			"filename": "version_check"
-		}
+      }
 	}
 }
