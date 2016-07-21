@@ -45,4 +45,6 @@ $lang = array_merge($lang, array(
 
 	'USER_EXPLAIN'			=> 'Select the required user',
 	'USER_LOGIN_RESET'		=> 'Successfully reset %1$s failed login attempts for <strong>%2$s</strong>.',
+
+	'VERSION'				=> 'Version',
 ));

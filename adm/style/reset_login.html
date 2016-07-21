@@ -1,34 +1,35 @@
-<!-- INCLUDE overall_header.html -->
+{% include 'overall_header.html' %}
+{% INCLUDECSS '@david63_resetlogin/version.css' %}
 
 <a name="maincontent"></a>
 
-<h1>{L_RESET_LOGIN}</h1>
-{RESET_LOGIN_ATTEMPTS_VERSION}<br /><br />
-<p>{L_RESET_LOGIN_EXPLAIN}</p>
+<h1>{{ lang('RESET_LOGIN') }}</h1>
+<p>{{ lang('RESET_LOGIN_EXPLAIN') }}</p>
+<span class="version_name">{{ lang('VERSION') }}{{ lang('COLON') }}</span><span class="version">{RESET_LOGIN_ATTEMPTS_VERSION}</span>
 
-<!-- IF S_ERROR -->
+{% if S_ERROR %}
 	<div class="errorbox">
-		<h3>{L_WARNING}</h3>
+		<h3>{{ lang('WARNING') }}</h3>
 		<p>{ERROR_MSG}</p>
 	</div>
-<!-- ENDIF -->
+{% endif %}
 
 <form id="resetlogin" method="post" action="{U_ACTION}">
 	<fieldset>
-		<legend>{L_RESET_LOGIN}</legend>
+		<legend>{{ lang('RESET_LOGIN') }}</legend>
 		<dl>
-			<dt><label for="reset_username">{L_USERNAME}{L_COLON}</label><br /><span>{L_USER_EXPLAIN}</span></dt>
+			<dt><label for="reset_username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('USER_EXPLAIN') }}</span></dt>
 			<dd><input class="text narrow" type="text" id="reset_username" name="reset_username" value="{RESET_USERNAME}" /></dd>
-			<dd>[ <a href="{U_RESET_USERNAME}" onclick="find_username(this.href); return false;">{L_USERNAME}</a> ]</dd>
+			<dd>[ <a href="{U_RESET_USERNAME}" onclick="find_username(this.href); return false;">{{ lang('USERNAME') }}</a> ]</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
-		<legend>{L_SUBMIT}</legend>
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
 		{S_FORM_TOKEN}
 	</fieldset>
 </form>
 
-<!-- INCLUDE overall_footer.html -->
+{% include 'overall_footer.html' %}
