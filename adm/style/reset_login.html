@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@david63_resetlogin/admin_forms.css' %}
 
 <a name="maincontent"></a>
 
@@ -19,16 +20,20 @@
 		<legend>{{ lang('RESET_LOGIN') }}</legend>
 		<dl>
 			<dt><label for="reset_username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('USER_EXPLAIN') }}</span></dt>
-			<dd><input class="text narrow" type="text" id="reset_username" name="reset_username" value="{RESET_USERNAME}" /></dd>
-			<dd>[ <a href="{U_RESET_USERNAME}" onclick="find_username(this.href); return false;">{{ lang('USERNAME') }}</a> ]</dd>
+			<dd>
+				<input class="textbox" type="text" id="reset_username" name="reset_username" value="{RESET_USERNAME}" />
+			</dd>
+			<dd>
+				[ <a href="{{ U_RESET_USERNAME }}" onclick="find_username(this.href); return false;">{{ lang('USERNAME') }}</a> ]
+			</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
 		<legend>{{ lang('SUBMIT') }}</legend>
-		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
-		{S_FORM_TOKEN}
+		<input class="adm-button" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="adm-button" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>
 

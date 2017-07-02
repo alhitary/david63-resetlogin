@@ -10,7 +10,7 @@
 namespace david63\resetlogin\controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use david63\resetlogin\ext;
+use \david63\resetlogin\ext;
 
 /**
 * Admin controller
@@ -41,7 +41,7 @@ class admin_controller implements admin_interface
 	/** @var string PHP extension */
 	protected $php_ext;
 
-	/** @var phpbb\language\language */
+	/** @var \phpbb\language\language */
 	protected $language;
 
 	/** @var string Custom form action */
